@@ -1,1 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Control Your Mind</title>
 
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #1a1a2e;
+    color: #eee;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+section {
+    background: #24243e;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 12px;
+}
+
+button {
+    background: #e94560;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    margin: 5px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #d63350;
+}
+
+#timerDisplay {
+    display: block;
+    text-align: center;
+    font-size: 42px;
+    margin: 15px;
+}
+
+input {
+    padding: 10px;
+    width: 65%;
+    border: none;
+    border-radius: 6px;
+}
+
+li {
+    margin: 8px 0;
+}
+
+.progress-container {
+    background: #444;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 20px;
+    background: #00d884;
+    width: 0%;
+}
+
+.creator {
+    text-align: center;
+    opacity: 0.8;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🧠 Control Your Mind</h1>
+<h2>Control Your Mind. Control Your Life.</h2>
+
+<section>
+<h2>🏠 Home</h2>
+<p>Stay focused, build good habits and work toward your goals.</p>
+</section>
+
+<section>
+<h2>⏱️ Focus Timer</h2>
+
+<div id="timerDisplay">25:00</div>
+
+<button onclick="startTimer()">Start</button>
+<button onclick="pauseTimer()">Pause</button>
+<button onclick="resetTimer()">Reset</button>
+</section>
+
+<section>
+<h2>✅ Daily Habits</h2>
+
+<input id="habitInput" type="text" placeholder="Add a new habit">
+<button onclick="addHabit()">Add</button>
+
+<ul id="habitsList"></ul>
+</section>
+
+<section>
+<h2>🎯 Daily Challenge</h2>
+
+<button onclick="giveChallenge()">Give Me a Challenge!</button>
+
+<p id="challengeDisplay"></p>
+</section>
+
+<section>
+<h2>🧠 Mindset Rules</h2>
+
+<p>1. Stay positive and open-minded.</p>
+<p>2. Learn from challenges.</p>
+<p>3. Be consistent.</p>
+<p>4. Focus on progress, not perfection.</p>
+<p>5. Use your time wisely.</p>
+</section>
+
+<section>
+<h2>📈 Progress Tracker</h2>
+
+<div class="progress-container">
+<div class="progress" id="progressBar"></div>
+</div>
+
+<button onclick="increaseProgress()">Complete Task</button>
+</section>
+
+<p class="creator">Created by Aditya Kumar Yadav</p>
+
+</div>
+
+<script>
+
+let time = 1500;
+let timer = null;
+
+function updateTimer() {
+
+    let minutes = Math.floor(time / 60);
+    let seconds = time % 60;
+
+    document.getElementById("timerDisplay").textContent =
+        minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+}
+
+function startTimer() {
+
+    if (timer !== null) return;
+
+    timer = setInterval(function() {
+
+        if (time > 0) {
+            time--;
+            updateTimer();
+        } else {
+            clearInterval(timer);
+            timer = null;
+            alert("Focus session complete!");
+        }
+
+    }, 1000);
+}
+
+function pauseTimer() {
+
+    clearInterval(timer);
+    timer = null;
+}
+
+function resetTimer() {
+
+    clearInterval(timer);
+    timer = null;
+    time = 1500;
+    updateTimer();
+}
+
+function addHabit() {
+
+    let input = document.getElementById("habitInput");
+    let habit = input.value.trim();
+
+    if (habit === "") return;
+
+    let li = document.createElement("li");
+
+    li.innerHTML =
+        '<input type="checkbox"> ' + habit;
+
+    document.getElementById("habitsList").appendChild(li);
+
+    input.value = "";
+}
+
+const challenges = [
+    "Read for 20 minutes",
+    "Organize your study area",
+    "Learn something new today",
+    "Write down your goals",
+    "Spend 30 minutes learning a skill"
+];
+
+function giveChallenge() {
+
+    let random =
+        challenges[Math.floor(Math.random() * challenges.length)];
+
+    document.getElementById("challengeDisplay").textContent =
+        random;
+}
+
+let progress = 0;
+
+function increaseProgress() {
+
+    if (progress < 100) {
+        progress += 10;
+        document.getElementById("progressBar").style.width =
+            progress + "%";
+    }
+}
+
+updateTimer();
+
+</script>
+
+</body>
+</html>
