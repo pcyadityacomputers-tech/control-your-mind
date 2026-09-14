@@ -129,7 +129,13 @@ li {
 <p>4. Focus on progress, not perfection.</p>
 <p>5. Use your time wisely.</p>
 </section>
+<section>
+<h2>🔥 Days Saved</h2>
 
+<p id="daysSaved">0 days</p>
+
+<button onclick="saveToday()">Complete Today</button>
+</section>
 <section>
 <h2>📈 Progress Tracker</h2>
 
@@ -223,7 +229,18 @@ function giveChallenge() {
     document.getElementById("challengeDisplay").textContent =
         random;
 }
+let daysSaved = localStorage.getItem("daysSaved") || 0;
 
+document.getElementById("daysSaved").textContent =
+    daysSaved + " days";
+
+function saveToday() {
+    daysSaved++;
+    localStorage.setItem("daysSaved", daysSaved);
+
+    document.getElementById("daysSaved").textContent =
+        daysSaved + " days";
+}
 let progress = 0;
 
 function increaseProgress() {
