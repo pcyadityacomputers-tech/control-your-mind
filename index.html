@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Control Your Mind</title>
+
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#e94560">
 
 <style>
 body {
@@ -74,6 +78,26 @@ li {
     width: 0%;
 }
 
+#progressText,
+#daysSaved,
+#dayWelcome {
+    text-align: center;
+    font-size: 20px;
+}
+
+.challenge {
+    font-size: 18px;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.warning {
+    background: #3b1f25;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
 .creator {
     text-align: center;
     opacity: 0.8;
@@ -86,175 +110,128 @@ li {
 <div class="container">
 
 <h1>🧠 Control Your Mind</h1>
-<h2>Control Your Mind. Control Your Life.</h2>
 
 <section>
-<h2>🏠 Home</h2>
-<p>Stay focused, build good habits and work toward your goals.</p>
+<h2 id="dayWelcome">Welcome</h2>
+<p style="text-align:center;">
+Build focus, awareness, healthy habits and progress every day.
+</p>
 </section>
 
 <section>
-<h2>⏱️ Focus Timer</h2>
+
+<h2>⏱️ Focus Time</h2>
 
 <div id="timerDisplay">25:00</div>
+
+<button onclick="setFocusTime(25)">25 Min</button>
+<button onclick="setFocusTime(60)">60 Min</button>
+<button onclick="setFocusTime(180)">180 Min</button>
+
+<br>
 
 <button onclick="startTimer()">Start</button>
 <button onclick="pauseTimer()">Pause</button>
 <button onclick="resetTimer()">Reset</button>
+
+<p style="text-align:center;">Break:</p>
+
+<button onclick="startBreak(5)">5 Min</button>
+<button onclick="startBreak(10)">10 Min</button>
+<button onclick="startBreak(15)">15 Min</button>
+<button onclick="startBreak(20)">20 Min</button>
+
+<div class="warning">
+⚠️ Break reminder: Rest your mind, drink water, stretch or walk.
+Avoid getting trapped in reels and short-video scrolling.
+</div>
+
 </section>
 
 <section>
+
 <h2>✅ Daily Habits</h2>
 
-<input id="habitInput" type="text" placeholder="Add a new habit">
+<input id="habitInput" type="text" placeholder="Add a habit">
+
 <button onclick="addHabit()">Add</button>
 
 <ul id="habitsList"></ul>
+
 </section>
 
 <section>
+
 <h2>🎯 Daily Challenge</h2>
 
-<button onclick="giveChallenge()">Give Me a Challenge!</button>
+<p id="challengeDisplay" class="challenge">
+Complete one meaningful action today.
+</p>
 
-<p id="challengeDisplay"></p>
+<button onclick="giveChallenge()">Give Me a Challenge</button>
+
 </section>
 
 <section>
-<h2>🧠 Mindset Rules</h2>
 
-<p>1. Stay positive and open-minded.</p>
-<p>2. Learn from challenges.</p>
-<p>3. Be consistent.</p>
-<p>4. Focus on progress, not perfection.</p>
-<p>5. Use your time wisely.</p>
+<h2>🧠 Mindset Rule</h2>
+
+<p style="text-align:center;">
+<strong>Focus on progress with awareness.</strong>
+</p>
+
+<p>
+1. Notice what you are doing.
+</p>
+
+<p>
+2. Focus on one important task.
+</p>
+
+<p>
+3. Improve instead of chasing perfection.
+</p>
+
+<p>
+4. Learn from mistakes.
+</p>
+
+<p>
+5. Use your time intentionally.
+</p>
+
 </section>
+
 <section>
+
 <h2>🔥 Days Saved</h2>
 
 <p id="daysSaved">0 days</p>
 
-<button onclick="saveToday()">Complete Today</button>
+<button onclick="resetDays()">Reset Days</button>
+
+<p id="resetMessage"></p>
+
 </section>
+
 <section>
-<h2>📈 Progress Tracker</h2>
+
+<h2>📈 Daily Progress</h2>
+
+<p id="progressText">0% completed</p>
 
 <div class="progress-container">
+
 <div class="progress" id="progressBar"></div>
+
 </div>
 
-<button onclick="increaseProgress()">Complete Task</button>
+<p style="text-align:center;">
+Progress is automatically calculated from your completed habits.
+</p>
+
 </section>
 
-<p class="creator">Created by Aditya Kumar Yadav</p>
-
-</div>
-
-<script>
-
-let time = 1500;
-let timer = null;
-
-function updateTimer() {
-
-    let minutes = Math.floor(time / 60);
-    let seconds = time % 60;
-
-    document.getElementById("timerDisplay").textContent =
-        minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
-}
-
-function startTimer() {
-
-    if (timer !== null) return;
-
-    timer = setInterval(function() {
-
-        if (time > 0) {
-            time--;
-            updateTimer();
-        } else {
-            clearInterval(timer);
-            timer = null;
-            alert("Focus session complete!");
-        }
-
-    }, 1000);
-}
-
-function pauseTimer() {
-
-    clearInterval(timer);
-    timer = null;
-}
-
-function resetTimer() {
-
-    clearInterval(timer);
-    timer = null;
-    time = 1500;
-    updateTimer();
-}
-
-function addHabit() {
-
-    let input = document.getElementById("habitInput");
-    let habit = input.value.trim();
-
-    if (habit === "") return;
-
-    let li = document.createElement("li");
-
-    li.innerHTML =
-        '<input type="checkbox"> ' + habit;
-
-    document.getElementById("habitsList").appendChild(li);
-
-    input.value = "";
-}
-
-const challenges = [
-    "Read for 20 minutes",
-    "Organize your study area",
-    "Learn something new today",
-    "Write down your goals",
-    "Spend 30 minutes learning a skill"
-];
-
-function giveChallenge() {
-
-    let random =
-        challenges[Math.floor(Math.random() * challenges.length)];
-
-    document.getElementById("challengeDisplay").textContent =
-        random;
-}
-let daysSaved = localStorage.getItem("daysSaved") || 0;
-
-document.getElementById("daysSaved").textContent =
-    daysSaved + " days";
-
-function saveToday() {
-    daysSaved++;
-    localStorage.setItem("daysSaved", daysSaved);
-
-    document.getElementById("daysSaved").textContent =
-        daysSaved + " days";
-}
-let progress = 0;
-
-function increaseProgress() {
-
-    if (progress < 100) {
-        progress += 10;
-        document.getElementById("progressBar").style.width =
-            progress + "%";
-    }
-}
-
-updateTimer();
-
-</script>
-
-</body>
-</html>
+<p class="creator">
+Created by Aditya Kumar Yadav
+</
